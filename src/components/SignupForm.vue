@@ -1,10 +1,11 @@
 <template>
-  <form>
+  <form @submit.prevent="submitForm">
     <label>Email:</label>
     <input type="email" required v-model="email">
 
     <label>Password:</label>
     <input type="password" required v-model="password">
+    <div class="error" v-if="passwordError">{{ passwordError }}</div>
 
     <label>Role</label>
     <select v-model="role">
@@ -15,7 +16,7 @@
     <label for="">Skills</label>
     <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
     <div v-for="skill in skills" :key="skill" class="pill">
-      <span @click="deleteKill(skill)">{{ skill }}</span>
+      <span @click="deleteSKill(skill)">{{ skill }}</span>
     </div>
 
     <div class="terms">
@@ -23,13 +24,12 @@
       <label for="">Accept terms and conditions</label>
     </div>
 
+    <div class="submit">
+      <button>Create an Account</button>
+    </div>
+
   </form>
 
-  <p>Email: {{ email }}</p>
-  <p>Password: {{ password }}</p>
-  <p>Role: {{ role }}</p>
-  <p>Terms accepted: {{ terms }}</p>
-  <p>Nmaes: {{ names }}</p>
 </template>
 
 <script>
@@ -42,6 +42,7 @@ export default {
       terms: false,
       tempSkill: '',
       skills: [],
+      passwordError: '',
     }
   },
   methods: {
@@ -53,8 +54,17 @@ export default {
         this.tempSkill = ''
       }
     },
-    deleteKill (skill) {
+    deleteSKill (skill) {
       this.skills.splice(this.skills.indexOf(skill), 1)
+    },
+    submitForm () {
+      if(this.password.length < 8) {
+        this.passwordError = 'Password must be at least 8 characters'
+        return
+      }
+      else {
+        this.passwordError = ''
+      }
     }
   }
 }
@@ -105,5 +115,28 @@ export default {
     font-size: 0.8em;
     font-weight: bold;
     cursor: pointer;
+  }
+
+  button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background: #4CAF50;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .submit {
+    text-align: center;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8em;
+    margin: 5px 0;
   }
 </style>
