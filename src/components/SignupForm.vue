@@ -14,7 +14,9 @@
     
     <label for="">Skills</label>
     <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
-    <div v-for="skill in skills" :key="skill" class="pill"> {{ skill }}</div>
+    <div v-for="skill in skills" :key="skill" class="pill">
+      <span @click="deleteKill(skill)">{{ skill }}</span>
+    </div>
 
     <div class="terms">
       <input type="checkbox" required v-model="terms">
@@ -50,6 +52,9 @@ export default {
         }
         this.tempSkill = ''
       }
+    },
+    deleteKill (skill) {
+      this.skills.splice(this.skills.indexOf(skill), 1)
     }
   }
 }
@@ -88,5 +93,17 @@ export default {
     top: 2px;
     width: auto;
     margin-right: 10px;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    background: #eee;
+    color: #777;
+    font-size: 0.8em;
+    font-weight: bold;
+    cursor: pointer;
   }
 </style>
